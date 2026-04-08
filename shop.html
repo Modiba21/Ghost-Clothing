@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHOST SHOP</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#f8f8f8;}
+
+/* HEADER */
+header{
+    background:#000;
+    color:#fff;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;   /* ✅ FIXED */
+    top:0;             
+    z-index:1000;      
+}
+.logo{font-weight:bold;letter-spacing:2px;}
+.cart{cursor:pointer;}
+
+/* FILTER */
+.filters{
+    display:flex;
+    justify-content:center;   /* ✅ FIXED */
+    align-items:center;
+    gap:20px;
+    padding:15px;
+    background:#fff;
+}
+.filters button{
+    padding:10px;
+    border:1px solid #ddd;
+    background:#fff;
+    cursor:pointer;
+}
+.filters button:hover{background:#000;color:#fff;}
+
+/* GRID */
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    padding:15px;
+}
+
+/* CARD */
+.card{
+    background:#fff;
+    padding:10px;
+    position:relative;
+    border-radius:10px;
+    transition:0.3s;
+}
+.card:hover{transform:translateY(-5px);}
+.card img{width:100%;border-radius:10px;}
+.card h3{font-size:14px;margin-top:10px;}
+.price{color:#666;margin:5px 0;}
+
+.add-btn{
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    background:#ffc107;
+    border:none;
+    padding:10px;
+    cursor:pointer;
+    border-radius:50%;
+}
+
+/* SIZE */
+.size-btn{
+    padding:5px 8px;
+    border:1px solid #000;
+    margin:2px;
+    cursor:pointer;
+    background:#fff;
+}
+.size-btn.active{background:#000;color:#fff;}
+
+/* COLOR */
+.color-btn{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    display:inline-block;
+    margin:3px;
+    border:2px solid #ccc;
+    cursor:pointer;
+}
+.color-btn.active{border:2px solid #000;}
+
+/* MENU */
+.side-menu{
+    position:fixed;
+    left:-260px;
+    width:260px;
+    height:100%;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter: blur(15px);
+    padding:60px 20px;
+    transition:0.3s;
+}
+.side-menu.active{left:0;}
+.side-menu a{
+    display:block;
+    padding:10px;
+    color:#000;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* CART */
+.cart-box{
+    position:fixed;
+    right:-100%;
+    top:0;
+    width:340px;
+    height:100%;
+    background:#fff;
+    padding:20px;
+    transition:0.4s;
+    overflow-y:auto;
+    z-index:9999;
+}
+.cart-box.active{right:0;}
+
+.cart-item{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+    border-bottom:1px solid #eee;
+    padding-bottom:10px;
+}
+
+.cart-item img{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.cart-info{flex:1;font-size:13px;}
+
+.qty-controls{
+    display:flex;
+    gap:5px;
+    margin-top:5px;
+}
+
+.qty-controls button{
+    padding:2px 6px;
+    border:none;
+    background:#000;
+    color:#fff;
+    cursor:pointer;
+}
+
+.remove{
+    color:red;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.summary{
+    border-top:1px solid #ddd;
+    padding-top:10px;
+    margin-top:10px;
+}
+
+.summary p{
+    display:flex;
+    justify-content:space-between;
+    margin:5px 0;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#000;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div class="side-menu" id="menu">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+</div>
+
+<!-- HEADER -->
+<header>
+    <div style="display:flex;gap:10px;align-items:center;">
+        <div onclick="toggleMenu()">☰</div>
+        <div class="logo">GHOST</div>
+    </div>
+
+    <div class="cart" onclick="toggleCart()">🛒 (<span id="count">0</span>)</div>
+</header>
+
+<!-- FILTER -->
+<div class="filters">
+<button onclick="filter('all')">All</button>
+<button onclick="filter('tshirt')">T-Shirts</button>
+<button onclick="filter('hoodie')">Hoodies</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products" id="products"></div>
+
+<!-- CART -->
+<div class="cart-box" id="cartBox">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+
+    <div class="summary">
+        <p><span>Subtotal</span><span id="subtotal">R0</span></p>
+        <p><span>Delivery</span><span id="delivery">R0</span></p>
+        <p><strong>Total</strong><strong id="total">R0</strong></p>
+    </div>
+
+    <button class="btn" onclick="goCheckout()">Checkout</button>
+</div>
+
+<script>
+
+/* LOAD SAVED CART */
+let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
+
+let products=[
+{name:"Ghost Apparition",price:450,type:"tshirt",img:"images/t1.jpeg"},
+{name:"Ghost MidNight Drip",price:450,type:"tshirt",img:"images/t2.jpeg"},
+{name:"Ghost Boxy T-shirt",price:450,type:"tshirt",img:"images/t3.jpeg"},
+{name:"Ghost MidNight drip ",price:450,type:"tshirt",img:"images/t4.jpeg"},
+{name:"Wave Tee",price:450,type:"tshirt",img:"images/t5.jpeg"},
+{name:"Royal Basic Tee",price:450,type:"tshirt",img:"images/t6.jpeg"},
+{name:"Wave Tee",price:450,type:"tshirt",img:"images/t7.jpeg"},
+{name:"Ghost Vision Tee",price:450,type:"tshirt",img:"images/t8.jpeg"},
+{name:"Ghost Boxy T-Shirt",price:450,type:"tshirt",img:"images/t9.jpeg"},
+{name:"Ghost Vision Tee",price:450,type:"tshirt",img:"images/t10.jpeg"},
+{name:"Royal Core Hoodie",price:500,type:"hoodie",img:"images/h1.jpeg"},
+{name:"Royal Core Hoodie",price:500,type:"hoodie",img:"images/h2.jpeg"},
+{name:"Ghost Mode Hoodie",price:500,type:"hoodie",img:"images/h3.jpeg"},
+{name:"EveryDay Heavy Hoodie",price:500,type:"hoodie",img:"images/h4.jpeg"}
+];
+
+function displayProducts(list){
+let html='';
+list.forEach((p,i)=>{
+html+=`
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p class="price">R ${p.price}</p>
+
+<div>
+<button class="size-btn" onclick="selectSize(this)">S</button>
+<button class="size-btn" onclick="selectSize(this)">M</button>
+<button class="size-btn" onclick="selectSize(this)">L</button>
+<button class="size-btn" onclick="selectSize(this)">XL</button>
+</div>
+
+<div>
+<span class="color-btn" style="background:black" onclick="selectColor(this)"></span>
+<span class="color-btn" style="background:white" onclick="selectColor(this)"></span>
+<span class="color-btn" style="background:red" onclick="selectColor(this)"></span>
+<span class="color-btn" style="background:blue" onclick="selectColor(this)"></span>
+<span class="color-btn" style="background:gray" onclick="selectColor(this)"></span>
+<span class="color-btn" style="background:pink" onclick="selectColor(this)"></span>
+</div>
+
+<button class="add-btn" onclick="addToCart(${i})">🛒</button>
+</div>`;
+});
+document.getElementById("products").innerHTML=html;
+}
+displayProducts(products);
+
+function selectSize(btn){
+btn.parentElement.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+}
+
+function selectColor(btn){
+btn.parentElement.querySelectorAll(".color-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+}
+
+function addToCart(i){
+let card=document.querySelectorAll(".card")[i];
+
+let size=card.querySelector(".size-btn.active");
+let color=card.querySelector(".color-btn.active");
+
+if(!size||!color){
+alert("Select size & color");
+return;
+}
+
+cart.push({
+...products[i],
+size:size.innerText,
+color:color.style.background,
+qty:1
+});
+
+updateCart();
+}
+
+function updateCart(){
+let html='';
+let subtotal=0;
+
+cart.forEach((item,index)=>{
+subtotal+=item.price*item.qty;
+
+html+=`
+<div class="cart-item">
+<img src="${item.img}">
+<div class="cart-info">
+<b>${item.name}</b><br>
+Size: ${item.size}<br>
+Color: ${item.color}
+
+<div class="qty-controls">
+<button onclick="changeQty(${index},-1)">-</button>
+<span>${item.qty}</span>
+<button onclick="changeQty(${index},1)">+</button>
+</div>
+
+<div class="remove" onclick="removeItem(${index})">Remove</div>
+</div>
+
+<div>R ${item.price*item.qty}</div>
+</div>`;
+});
+
+let delivery = subtotal >= 1000 ? 0 : (subtotal>0 ? 50 : 0);
+let total = subtotal + delivery;
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("subtotal").innerText="R"+subtotal;
+document.getElementById("delivery").innerText="R"+delivery;
+document.getElementById("total").innerText="R"+total;
+document.getElementById("count").innerText=cart.length;
+
+/* SAVE */
+localStorage.setItem("ghost_cart", JSON.stringify(cart));
+}
+
+function changeQty(i,val){
+cart[i].qty+=val;
+if(cart[i].qty<=0) cart.splice(i,1);
+updateCart();
+}
+
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+function toggleCart(){
+document.getElementById("cartBox").classList.toggle("active");
+}
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active");
+}
+
+function filter(type){
+if(type==="all") displayProducts(products);
+else displayProducts(products.filter(p=>p.type===type));
+}
+
+/* ✅ FIXED CHECKOUT */
+function goCheckout(){
+localStorage.setItem("ghost_cart", JSON.stringify(cart));
+window.location.href="checkout.html";
+}
+
+updateCart();
+</script>
+
+</body>
+</html>

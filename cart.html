@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHOST CART</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #ffffff;
+    color: #111;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #0a0a0a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 25px;
+    z-index: 1000;
+}
+
+.brand {
+    letter-spacing: 6px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 120px 18px 40px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* HERO TEXT */
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.hero p {
+    color: #555;
+    font-size: 14px;
+}
+
+/* CART ITEM */
+.item {
+    display: flex;
+    gap: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+    padding: 10px;
+    align-items: center;
+    background: #fff;
+}
+
+.item img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.details {
+    flex: 1;
+}
+
+.details h3 {
+    font-size: 15px;
+}
+
+.details p {
+    font-size: 13px;
+    color: #555;
+}
+
+/* REMOVE */
+.remove {
+    background: black;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* SUMMARY BOX */
+.summary {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-top: 25px;
+}
+
+.summary h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* CHECKOUT BUTTON */
+.btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: black;
+    color: white;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #333;
+}
+
+/* EMPTY */
+.empty {
+    text-align: center;
+    margin-top: 80px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>☰</div>
+    <div class="brand">GHOST</div>
+    <div>🛒</div>
+</header>
+
+<div class="container">
+
+    <!-- MOTIVATION TEXT -->
+    <div class="hero">
+        <h1>Complete Your Look</h1>
+        <p>You're one step away from owning your Ghost style.</p>
+    </div>
+
+    <div id="cartContainer"></div>
+
+    <!-- SUMMARY -->
+    <div class="summary" id="summaryBox" style="display:none;">
+        <h2>Order Summary</h2>
+
+        <p><span>Subtotal</span><span id="subtotal">R0</span></p>
+        <p><span>Delivery Fee</span><span id="delivery">R60</span></p>
+        <p><span>Estimated Delivery</span><span>2–5 Days</span></p>
+
+        <p class="total"><span>Total</span><span id="total">R0</span></p>
+    </div>
+
+    <button class="btn" onclick="goCheckout()">Proceed to Checkout</button>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* LOAD CART */
+function loadCart() {
+
+    let container = document.getElementById("cartContainer");
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+        container.innerHTML = "<p class='empty'>Your cart is empty. Start adding Ghost pieces 🔥</p>";
+        document.getElementById("summaryBox").style.display = "none";
+        return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+
+        subtotal += item.price;
+
+        container.innerHTML += `
+        <div class="item">
+            <img src="${item.image}">
+            <div class="details">
+                <h3>${item.name}</h3>
+                <p>Size: ${item.size}</p>
+                <p>Color: ${item.color}</p>
+                <p>R${item.price}</p>
+            </div>
+            <button class="remove" onclick="removeItem(${index})">X</button>
+        </div>
+        `;
+    });
+
+    let delivery = 60;
+    let total = subtotal + delivery;
+
+    document.getElementById("subtotal").innerText = "R" + subtotal;
+    document.getElementById("delivery").innerText = "R" + delivery;
+    document.getElementById("total").innerText = "R" + total;
+
+    document.getElementById("summaryBox").style.display = "block";
+}
+
+/* REMOVE ITEM */
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+/* GO TO CHECKOUT PAGE */
+function goCheckout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty");
+        return;
+    }
+
+    window.location.href = "checkout.html";
+}
+
+loadCart();
+
+</script>
+
+</body>
+</html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHOST CART</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #ffffff;
+    color: #111;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #0a0a0a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 25px;
+    z-index: 1000;
+}
+
+.brand {
+    letter-spacing: 6px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 120px 18px 40px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* HERO TEXT */
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.hero p {
+    color: #555;
+    font-size: 14px;
+}
+
+/* CART ITEM */
+.item {
+    display: flex;
+    gap: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+    padding: 10px;
+    align-items: center;
+    background: #fff;
+}
+
+.item img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.details {
+    flex: 1;
+}
+
+.details h3 {
+    font-size: 15px;
+}
+
+.details p {
+    font-size: 13px;
+    color: #555;
+}
+
+/* REMOVE */
+.remove {
+    background: black;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* SUMMARY BOX */
+.summary {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-top: 25px;
+}
+
+.summary h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* CHECKOUT BUTTON */
+.btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: black;
+    color: white;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #333;
+}
+
+/* EMPTY */
+.empty {
+    text-align: center;
+    margin-top: 80px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>☰</div>
+    <div class="brand">GHOST</div>
+    <div>🛒</div>
+</header>
+
+<div class="container">
+
+    <!-- MOTIVATION TEXT -->
+    <div class="hero">
+        <h1>Complete Your Look</h1>
+        <p>You're one step away from owning your Ghost style.</p>
+    </div>
+
+    <div id="cartContainer"></div>
+
+    <!-- SUMMARY -->
+    <div class="summary" id="summaryBox" style="display:none;">
+        <h2>Order Summary</h2>
+
+        <p><span>Subtotal</span><span id="subtotal">R0</span></p>
+        <p><span>Delivery Fee</span><span id="delivery">R60</span></p>
+        <p><span>Estimated Delivery</span><span>2–5 Days</span></p>
+
+        <p class="total"><span>Total</span><span id="total">R0</span></p>
+    </div>
+
+    <button class="btn" onclick="goCheckout()">Proceed to Checkout</button>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+/* LOAD CART */
+function loadCart() {
+
+    let container = document.getElementById("cartContainer");
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+        container.innerHTML = "<p class='empty'>Your cart is empty. Start adding Ghost pieces 🔥</p>";
+        document.getElementById("summaryBox").style.display = "none";
+        return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+
+        subtotal += item.price;
+
+        container.innerHTML += `
+        <div class="item">
+            <img src="${item.image}">
+            <div class="details">
+                <h3>${item.name}</h3>
+                <p>Size: ${item.size}</p>
+                <p>Color: ${item.color}</p>
+                <p>R${item.price}</p>
+            </div>
+            <button class="remove" onclick="removeItem(${index})">X</button>
+        </div>
+        `;
+    });
+
+    let delivery = 60;
+    let total = subtotal + delivery;
+
+    document.getElementById("subtotal").innerText = "R" + subtotal;
+    document.getElementById("delivery").innerText = "R" + delivery;
+    document.getElementById("total").innerText = "R" + total;
+
+    document.getElementById("summaryBox").style.display = "block";
+}
+
+/* REMOVE ITEM */
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+/* GO TO CHECKOUT PAGE */
+function goCheckout() {
+    if (cart.

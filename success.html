@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Order Confirmation - GHOST</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#ffffff;
+color:#111;
+}
+
+/* CONTAINER */
+.container{
+max-width:800px;
+margin:50px auto;
+padding:30px;
+text-align:center;
+}
+
+/* CHECK ICON */
+.check{
+font-size:60px;
+color:black;
+margin-bottom:10px;
+}
+
+/* TITLE */
+h1{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.sub{
+color:#666;
+margin-bottom:30px;
+}
+
+/* ORDER BOX */
+.box{
+border:1px solid #eee;
+padding:20px;
+border-radius:12px;
+text-align:left;
+margin-top:20px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
+}
+
+.items{
+margin-top:15px;
+border-top:1px solid #eee;
+padding-top:10px;
+}
+
+/* REVIEW */
+.review{
+margin-top:40px;
+}
+
+.stars{
+font-size:28px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.star{
+color:#ddd;
+transition:0.2s;
+}
+
+.star.active{
+color:black;
+}
+
+/* BUTTONS */
+.buttons{
+margin-top:40px;
+display:flex;
+gap:15px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+button{
+padding:14px 20px;
+border:none;
+cursor:pointer;
+font-weight:600;
+border-radius:8px;
+}
+
+.primary{
+background:black;
+color:white;
+}
+
+.secondary{
+background:#f2f2f2;
+color:#111;
+}
+
+/* FOOTER NOTE */
+.note{
+margin-top:25px;
+font-size:12px;
+color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="check">✔</div>
+
+<h1>Order Received</h1>
+<div class="sub">Thank you for shopping with GHOST</div>
+
+<!-- ORDER DETAILS -->
+<div class="box">
+<h3>Order Summary</h3>
+
+<div id="customer"></div>
+
+<div class="items" id="items"></div>
+
+<div class="row">
+<span>Delivery</span>
+<span id="delivery">R0</span>
+</div>
+
+<div class="row">
+<strong>Total</strong>
+<strong id="total">R0</strong>
+</div>
+
+<div class="row">
+<span>Status</span>
+<span>Awaiting Payment</span>
+</div>
+</div>
+
+<!-- REVIEW SECTION -->
+<div class="review">
+<h3>Rate your experience</h3>
+
+<div class="stars" id="stars">
+<span class="star" onclick="rate(1)">★</span>
+<span class="star" onclick="rate(2)">★</span>
+<span class="star" onclick="rate(3)">★</span>
+<span class="star" onclick="rate(4)">★</span>
+<span class="star" onclick="rate(5)">★</span>
+</div>
+
+<p id="ratingText">Tap a star to rate</p>
+</div>
+
+<!-- BUTTONS -->
+<div class="buttons">
+<button class="primary" onclick="shop()">Continue Shopping</button>
+<button class="secondary" onclick="home()">Back to Home</button>
+</div>
+
+<div class="note">
+A confirmation email will be sent once payment is completed.
+</div>
+
+</div>
+
+<script>
+
+let order = JSON.parse(localStorage.getItem("last_order")) || {};
+
+// LOAD ORDER
+function loadOrder(){
+
+if(!order || !order.items){
+document.querySelector(".container").innerHTML =
+"<h2>No order found</h2>";
+return;
+}
+
+let itemsHTML = "";
+let subtotal = 0;
+
+order.items.forEach(item=>{
+let total = item.price * item.qty;
+subtotal += total;
+
+itemsHTML += `
+<div class="row">
+<span>${item.name} (x${item.qty})</span>
+<span>R${total}</span>
+</div>
+`;
+});
+
+document.getElementById("items").innerHTML = itemsHTML;
+document.getElementById("delivery").innerText = "R" + order.delivery;
+document.getElementById("total").innerText =
+"R" + (subtotal + order.delivery);
+
+document.getElementById("customer").innerHTML = `
+<p><strong>${order.name}</strong></p>
+<p>${order.email}</p>
+<p>${order.phone}</p>
+`;
+}
+
+loadOrder();
+
+/* REVIEW SYSTEM */
+function rate(stars){
+
+let all = document.querySelectorAll(".star");
+
+all.forEach((s,i)=>{
+s.classList.toggle("active", i < stars);
+});
+
+document.getElementById("ratingText").innerText =
+"You rated us " + stars + " star(s)";
+}
+
+/* BUTTONS */
+function shop(){
+window.location.href = "shop.html";
+}
+
+function home(){
+window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GHOST Checkout</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#f9f9f9;color:#111;}
+
+/* HEADER */
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 25px;
+    background:#fff;
+    border-bottom:1px solid #eee;
+    position:sticky;
+    top:0;
+}
+
+.left-header{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.back{
+    cursor:pointer;
+    color:#555;
+}
+
+.brand{
+    letter-spacing:6px;
+    font-weight:700;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:30px;
+    padding:30px;
+}
+
+/* FORM */
+.form{
+    flex:1;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:6px;
+}
+
+/* DELIVERY */
+.delivery-options{
+    margin-top:15px;
+}
+
+.option{
+    border:1px solid #ddd;
+    padding:12px;
+    margin-top:8px;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.option.active{
+    border:2px solid black;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:16px;
+    background:black;
+    color:white;
+    border:none;
+    margin-top:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* PAYMENTS */
+.payments{
+    margin-top:18px;
+    text-align:center;
+    font-size:12px;
+    color:#666;
+}
+
+.payments img{
+    height:22px;
+    margin:5px;
+}
+
+/* SUMMARY */
+.summary{
+    flex:1;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+}
+
+.summary h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:12px;
+}
+
+.total{
+    font-size:18px;
+    font-weight:bold;
+    border-top:1px solid #eee;
+    padding-top:12px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="left-header">
+        <div class="back" onclick="goBack()">← Back</div>
+        <div class="brand">GHOST</div>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- FORM -->
+<div class="form">
+<h2>Checkout</h2>
+
+<input id="name" placeholder="Full Name">
+<input id="email" type="email" placeholder="Email Address">
+<input id="phone" placeholder="712345678 (we auto add +27)">
+<input id="address" placeholder="Address">
+<input id="city" placeholder="City">
+
+<!-- DELIVERY -->
+<div class="delivery-options" id="deliveryBox">
+<h3>Select Delivery</h3>
+
+<div class="option active" onclick="selectDelivery('paxi',100,this)">
+PAXI Pickup — R100
+</div>
+
+<div class="option" onclick="selectDelivery('courier',120,this)">
+Courier Delivery — R120
+</div>
+</div>
+
+<button onclick="payNow()">Proceed to Pay</button>
+
+<div class="payments">
+We accept:<br>
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Google_Pay_Logo.svg">
+</div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+<h2>Your Shopping Bag</h2>
+
+<div id="items"></div>
+
+<div class="row">
+<span>Subtotal</span>
+<span>R <span id="subtotal">0</span></span>
+</div>
+
+<div class="row">
+<span>Delivery</span>
+<span>R <span id="delivery">0</span></span>
+</div>
+
+<div class="row total">
+<span>Total</span>
+<span>R <span id="total">0</span></span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
+let deliveryFee = 100;
+
+function renderCart(){
+let html = "";
+let subtotal = 0;
+
+cart.forEach(item=>{
+let itemTotal = item.price * item.qty;
+subtotal += itemTotal;
+
+html += `
+<div class="item">
+<span>${item.name} (x${item.qty})</span>
+<span>R${itemTotal}</span>
+</div>`;
+});
+
+document.getElementById("items").innerHTML = html;
+document.getElementById("subtotal").innerText = subtotal;
+
+updateDelivery(subtotal);
+}
+
+function updateDelivery(subtotal){
+
+let box = document.getElementById("deliveryBox");
+
+if(subtotal >= 1000){
+deliveryFee = 0;
+box.innerHTML = "<h3>Free Delivery (Orders over R1000)</h3>";
+} else {
+box.innerHTML = `
+<h3>Select Delivery</h3>
+
+<div class="option active" onclick="selectDelivery('paxi',100,this)">
+PAXI Pickup — R100
+</div>
+
+<div class="option" onclick="selectDelivery('courier',120,this)">
+Courier Delivery — R120
+</div>
+`;
+}
+
+calculateTotal();
+}
+
+function selectDelivery(type, price, el){
+deliveryFee = price;
+
+document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+el.classList.add("active");
+
+calculateTotal();
+}
+
+function calculateTotal(){
+let subtotal = parseFloat(document.getElementById("subtotal").innerText || 0);
+let total = subtotal + deliveryFee;
+
+document.getElementById("delivery").innerText = deliveryFee;
+document.getElementById("total").innerText = total;
+}
+
+/* VALIDATION */
+function payNow(){
+
+let name = document.getElementById("name").value.trim();
+let email = document.getElementById("email").value.trim();
+let phone = document.getElementById("phone").value.trim();
+let address = document.getElementById("address").value.trim();
+let city = document.getElementById("city").value.trim();
+
+if(!name || !email || !phone || !address || !city){
+alert("Please enter all your details to proceed");
+return;
+}
+
+if(cart.length === 0){
+alert("Cart is empty");
+return;
+}
+
+let order = {
+name,
+email,
+phone: "+27" + phone.replace(/\D/g,''),
+address,
+city,
+items: cart,
+delivery: deliveryFee,
+status: "Awaiting Payment"
+};
+
+localStorage.setItem("last_order", JSON.stringify(order));
+
+window.location.href = "success.html";
+}
+
+function goBack(){
+window.location.href="shop.html";
+}
+
+renderCart();
+
+</script>
+
+</body>
+</html>
