@@ -2,18 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<!-- ✅ MOBILE FIX -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>GHOST Checkout</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-body{background:#f9f9f9;color:#111;}
+body{
+    background:#f9f9f9;
+    color:#111;
+    overflow-x:hidden; /* ✅ prevents side scrolling */
+}
 
 /* HEADER */
 .header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:18px 25px;
+    padding:14px 16px; /* ✅ mobile fit */
     background:#fff;
     border-bottom:1px solid #eee;
     position:sticky;
@@ -22,42 +30,45 @@ body{background:#f9f9f9;color:#111;}
 
 .left-header{
     display:flex;
-    gap:15px;
+    gap:10px;
     align-items:center;
 }
 
 .back{
     cursor:pointer;
     color:#555;
+    font-size:14px;
 }
 
 .brand{
-    letter-spacing:6px;
+    letter-spacing:4px;
     font-weight:700;
+    font-size:14px;
 }
 
 /* LAYOUT */
 .container{
     display:flex;
     flex-wrap:wrap;
-    gap:30px;
-    padding:30px;
+    gap:20px;
+    padding:15px;
 }
 
 /* FORM */
 .form{
-    flex:1;
+    flex:1 1 320px; /* ✅ responsive */
     background:#fff;
-    padding:25px;
+    padding:20px;
     border-radius:12px;
 }
 
 input{
     width:100%;
-    padding:14px;
-    margin:10px 0;
+    padding:12px;
+    margin:8px 0;
     border:1px solid #ddd;
     border-radius:6px;
+    font-size:14px;
 }
 
 /* DELIVERY */
@@ -80,7 +91,7 @@ input{
 /* BUTTON */
 button{
     width:100%;
-    padding:16px;
+    padding:14px;
     background:black;
     color:white;
     border:none;
@@ -98,21 +109,22 @@ button{
 }
 
 .payments img{
-    height:22px;
-    margin:5px;
+    height:20px;
+    margin:4px;
 }
 
 /* SUMMARY */
 .summary{
-    flex:1;
+    flex:1 1 320px; /* ✅ responsive */
     background:#fff;
-    padding:25px;
+    padding:20px;
     border-radius:12px;
 }
 
 .summary h2{
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:15px;
+    font-size:16px;
 }
 
 .item{
@@ -120,20 +132,29 @@ button{
     justify-content:space-between;
     padding:10px 0;
     border-bottom:1px solid #eee;
+    font-size:14px;
 }
 
 .row{
     display:flex;
     justify-content:space-between;
-    margin-top:12px;
+    margin-top:10px;
+    font-size:14px;
 }
 
 .total{
-    font-size:18px;
+    font-size:16px;
     font-weight:bold;
     border-top:1px solid #eee;
-    padding-top:12px;
-    margin-top:15px;
+    padding-top:10px;
+    margin-top:12px;
+}
+
+/* ✅ MOBILE STACK */
+@media (max-width:768px){
+    .container{
+        flex-direction:column;
+    }
 }
 </style>
 </head>
@@ -160,7 +181,6 @@ button{
 <input id="address" placeholder="Address">
 <input id="city" placeholder="City">
 
-<!-- DELIVERY -->
 <div class="delivery-options" id="deliveryBox">
 <h3>Select Delivery</h3>
 
@@ -212,7 +232,7 @@ We accept:<br>
 </div>
 
 <script>
-
+/* YOUR JS IS 100% UNCHANGED */
 let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
 let deliveryFee = 100;
 
@@ -278,7 +298,6 @@ document.getElementById("delivery").innerText = deliveryFee;
 document.getElementById("total").innerText = total;
 }
 
-/* VALIDATION */
 function payNow(){
 
 let name = document.getElementById("name").value.trim();
@@ -318,7 +337,6 @@ window.location.href="shop.html";
 }
 
 renderCart();
-
 </script>
 
 </body>

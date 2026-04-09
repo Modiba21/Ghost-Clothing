@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ✅ MOBILE FIX -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>GHOST</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -18,7 +21,7 @@
 body {
     background: #0a0a0a;
     color: #fff;
-    overflow-x: hidden;
+    overflow-x: hidden; /* ✅ prevent horizontal scroll */
 }
 
 /* HEADER */
@@ -28,7 +31,7 @@ header {
     top: 0;
     display: flex;
     justify-content: space-between;
-    padding: 20px 40px;
+    padding: 14px 16px; /* ✅ mobile fit */
     z-index: 1000;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(10px);
@@ -37,32 +40,31 @@ header {
 .left, .right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .brand {
-    font-size: 20px;
-    letter-spacing: 4px;
+    font-size: 14px; /* ✅ scaled */
+    letter-spacing: 3px;
     color: rgba(255,255,255,0.75);
 }
 
 .icon {
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
 }
 
-/* MENU (FIXED GLASS LOOK) */
+/* MENU */
 .menu {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 300px;
+    width: 80%; /* ✅ responsive */
+    max-width: 300px;
     height: 100%;
-    padding: 70px 30px;
+    padding: 70px 25px;
     transition: 0.4s;
     z-index: 2000;
-
-    /* 🔥 GLASS EFFECT (IMPORTANT FIX) */
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(18px);
 }
@@ -71,8 +73,8 @@ header {
     display: block;
     color: white;
     text-decoration: none;
-    margin: 20px 0;
-    font-size: 18px;
+    margin: 18px 0;
+    font-size: 16px;
 }
 
 .menu.active {
@@ -87,6 +89,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
 .hero::after {
@@ -103,9 +106,13 @@ header {
 }
 
 .hero h1 {
-    font-size: 80px;
-    letter-spacing: 10px;
+    font-size: 40px; /* ✅ responsive */
+    letter-spacing: 5px;
     color: rgba(255,255,255,0.72);
+}
+
+.hero p{
+    font-size:14px;
 }
 
 /* SECTIONS */
@@ -117,7 +124,7 @@ header {
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    padding: 60px;
+    padding: 30px; /* ✅ mobile fit */
 }
 
 .full-section::after {
@@ -133,29 +140,31 @@ header {
 }
 
 .section-text h2 {
-    font-size: 60px;
-    letter-spacing: 3px;
+    font-size: 28px; /* ✅ responsive */
+    letter-spacing: 2px;
     color: rgba(255,255,255,0.78);
 }
 
 .section-text p {
-    margin-top: 10px;
+    margin-top: 8px;
     color: #ddd;
+    font-size:13px;
 }
 
 .section-btn {
-    margin-top: 15px;
+    margin-top: 12px;
     display: inline-block;
-    padding: 10px 20px;
+    padding: 8px 16px;
     background: white;
     color: black;
     font-weight: bold;
     text-decoration: none;
+    font-size:13px;
 }
 
 /* ABOUT */
 .about {
-    padding: 120px 40px;
+    padding: 80px 20px; /* ✅ mobile fit */
     text-align: center;
     background: url('images/logo1.jpeg') center/cover no-repeat;
     position: relative;
@@ -177,50 +186,62 @@ header {
 
 .about h2 {
     color: red;
-    font-size: 26px;
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 .about p {
-    line-height: 1.7;
+    line-height: 1.6;
     color: #ccc;
+    font-size:14px;
 }
 
 /* LOGOS */
 .logos {
     display: flex;
     justify-content: center;
-    gap: 60px;
-    padding: 70px;
+    gap: 30px;
+    padding: 40px 20px;
     flex-wrap: wrap;
 }
 
 .logos img {
-    width: 120px;
+    width: 90px; /* ✅ scaled */
     opacity: 0.75;
 }
 
 /* SOCIAL */
 .social {
     text-align: center;
-    padding: 60px;
+    padding: 40px 20px;
 }
 
 .social i {
-    font-size: 25px;
-    margin: 10px;
+    font-size: 22px;
+    margin: 8px;
 }
 
 /* FOOTER */
 footer {
     text-align: center;
-    padding: 40px;
+    padding: 30px;
     background: #000;
 }
 
 footer h1 {
-    font-size: 50px;
-    letter-spacing: 10px;
+    font-size: 28px; /* ✅ responsive */
+    letter-spacing: 6px;
+}
+
+/* EXTRA MOBILE FIX */
+@media (max-width:768px){
+    .hero h1{
+        font-size:32px;
+    }
+
+    .section-text h2{
+        font-size:24px;
+    }
 }
 </style>
 </head>
@@ -304,25 +325,21 @@ footer h1 {
 
 <footer>
     <h1>GHOST</h1>
-    <p>Founded 2026</p>
+    <p>Founded 2023</p>
 </footer>
 
 <script>
-
 function toggleMenu(){
     document.getElementById("menu").classList.toggle("active");
 }
 
-/* CART REDIRECT */
 function goCart(){
     window.location.href = "shop.html";
 }
 
-/* SEARCH (placeholder for now) */
 function searchPage(){
     alert("Search feature coming soon 🔍");
 }
-
 </script>
 
 </body>
