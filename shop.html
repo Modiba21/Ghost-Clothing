@@ -194,61 +194,108 @@ header{
     margin-top:10px;
 }
 
+/* NIKE POPUP */
+#addPopup{
+position:fixed;
+bottom:-100%;
+left:0;
+width:100%;
+background:#fff;
+padding:20px;
+box-shadow:0 -5px 20px rgba(0,0,0,0.2);
+transition:0.4s;
+z-index:5000;
+border-radius:20px 20px 0 0;
+}
+
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(5px);
+opacity:0;
+pointer-events:none;
+transition:0.3s;
+z-index:4000;
+}
+
+#overlay.active{
+opacity:1;
+pointer-events:auto;
+}
+
 /* MOBILE */
 @media (max-width:768px){
-    .products{grid-template-columns:1fr;}
-    .cart-box{width:100%;}
+.products{grid-template-columns:1fr;}
+.cart-box{width:100%;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
+<div id="overlay" onclick="closePopup()"></div>
+
 <div class="side-menu" id="menu">
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="about.html">About</a>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="about.html">About</a>
 </div>
 
-<!-- HEADER -->
 <header>
-    <div style="display:flex;gap:10px;align-items:center;">
-        <div onclick="toggleMenu()">☰</div>
-        <div class="logo">GHOST</div>
-    </div>
-
-    <div class="cart" onclick="toggleCart()">🛒 (<span id="count">0</span>)</div>
+<div style="display:flex;gap:10px;align-items:center;">
+<div onclick="toggleMenu()">☰</div>
+<div class="logo">GHOST</div>
+</div>
+<div class="cart" onclick="toggleCart()">🛒 (<span id="count">0</span>)</div>
 </header>
 
-<!-- FILTER -->
 <div class="filters">
 <button onclick="filter('all')">All</button>
 <button onclick="filter('tshirt')">T-Shirts</button>
 <button onclick="filter('hoodie')">Hoodies</button>
 </div>
 
-<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
-<!-- CART -->
 <div class="cart-box" id="cartBox">
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
 
-    <div class="summary">
-        <p><span>Subtotal</span><span id="subtotal">R0</span></p>
-        <p><span>Delivery</span><span id="delivery">R0</span></p>
-        <p><strong>Total</strong><strong id="total">R0</strong></p>
-    </div>
+<div class="summary">
+<p><span>Subtotal</span><span id="subtotal">R0</span></p>
+<p><span>Delivery</span><span id="delivery">R0</span></p>
+<p><strong>Total</strong><strong id="total">R0</strong></p>
+</div>
 
-    <button class="btn" onclick="goCheckout()">Checkout</button>
+<button class="btn" onclick="goCheckout()">Checkout</button>
+</div>
+
+<!-- NIKE POPUP -->
+<div id="addPopup">
+<div style="display:flex;justify-content:space-between;">
+<b>✔ Added to Bag</b>
+<span onclick="closePopup()" style="cursor:pointer;">✖</span>
+</div>
+
+<div id="popupContent" style="display:flex;gap:10px;margin-top:10px;"></div>
+
+<button onclick="toggleCart();closePopup()" style="width:100%;margin-top:10px;padding:12px;border-radius:30px;">
+View Bag (<span id="popupCount">0</span>)
+</button>
+
+<button onclick="goCheckout()" style="width:100%;margin-top:10px;padding:12px;background:#000;color:#fff;border:none;border-radius:30px;">
+Checkout
+</button>
 </div>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
 
-let products=[
+let products=[/* SAME PRODUCTS (unchanged) */ 
 {name:"Ghost Apparition",price:450,type:"tshirt",img:"images/t1.jpeg"},
 {name:"Ghost MidNight Drip",price:450,type:"tshirt",img:"images/t2.jpeg"},
 {name:"Ghost Boxy T-shirt",price:450,type:"tshirt",img:"images/t3.jpeg"},
@@ -309,68 +356,86 @@ btn.classList.add("active");
 
 function addToCart(i){
 let card=document.querySelectorAll(".card")[i];
-
 let size=card.querySelector(".size-btn.active");
 let color=card.querySelector(".color-btn.active");
 
-if(!size||!color){
-alert("Select size & color");
-return;
+if(!size||!color){alert("Select size & color");return;}
+
+let existing=cart.find(item=>item.name===products[i].name&&item.size===size.innerText&&item.color===color.style.background);
+
+if(existing){existing.qty+=1;}
+else{
+cart.push({...products[i],size:size.innerText,color:color.style.background,qty:1});
 }
 
-cart.push({
-...products[i],
-size:size.innerText,
-color:color.style.background,
-qty:1
-});
-
 updateCart();
+showPopup(products[i],size.innerText,color.style.background);
+}
+
+function showPopup(product,size,color){
+document.getElementById("overlay").classList.add("active");
+
+document.getElementById("popupContent").innerHTML=`
+<img src="${product.img}" style="width:70px;height:70px;border-radius:10px;">
+<div>
+<b>${product.name}</b><br>
+Size: ${size}<br>
+<div style="display:flex;align-items:center;gap:5px;">
+Color: <span style="width:15px;height:15px;border-radius:50%;background:${color};display:inline-block;"></span>
+</div>
+<p>R ${product.price}</p>
+</div>`;
+
+let totalQty=cart.reduce((s,i)=>s+i.qty,0);
+document.getElementById("popupCount").innerText=totalQty;
+
+document.getElementById("addPopup").style.bottom="0";
+}
+
+function closePopup(){
+document.getElementById("addPopup").style.bottom="-100%";
+document.getElementById("overlay").classList.remove("active");
 }
 
 function updateCart(){
-let html='';
-let subtotal=0;
+let html='';let subtotal=0;let totalQty=0;
 
 cart.forEach((item,index)=>{
 subtotal+=item.price*item.qty;
+totalQty+=item.qty;
 
-html+=`
-<div class="cart-item">
+html+=`<div class="cart-item">
 <img src="${item.img}">
 <div class="cart-info">
 <b>${item.name}</b><br>
 Size: ${item.size}<br>
 Color: ${item.color}
-
 <div class="qty-controls">
 <button onclick="changeQty(${index},-1)">-</button>
 <span>${item.qty}</span>
 <button onclick="changeQty(${index},1)">+</button>
 </div>
-
 <div class="remove" onclick="removeItem(${index})">Remove</div>
 </div>
-
 <div>R ${item.price*item.qty}</div>
 </div>`;
 });
 
-let delivery = subtotal >= 1000 ? 0 : (subtotal>0 ? 50 : 0);
-let total = subtotal + delivery;
+let delivery=subtotal>=1000?0:(subtotal>0?100:0);
+let total=subtotal+delivery;
 
 document.getElementById("cartItems").innerHTML=html;
 document.getElementById("subtotal").innerText="R"+subtotal;
 document.getElementById("delivery").innerText="R"+delivery;
 document.getElementById("total").innerText="R"+total;
-document.getElementById("count").innerText=cart.length;
+document.getElementById("count").innerText=totalQty;
 
-localStorage.setItem("ghost_cart", JSON.stringify(cart));
+localStorage.setItem("ghost_cart",JSON.stringify(cart));
 }
 
 function changeQty(i,val){
 cart[i].qty+=val;
-if(cart[i].qty<=0) cart.splice(i,1);
+if(cart[i].qty<=0)cart.splice(i,1);
 updateCart();
 }
 
@@ -388,12 +453,12 @@ document.getElementById("menu").classList.toggle("active");
 }
 
 function filter(type){
-if(type==="all") displayProducts(products);
+if(type==="all")displayProducts(products);
 else displayProducts(products.filter(p=>p.type===type));
 }
 
 function goCheckout(){
-localStorage.setItem("ghost_cart", JSON.stringify(cart));
+localStorage.setItem("ghost_cart",JSON.stringify(cart));
 window.location.href="checkout.html";
 }
 
