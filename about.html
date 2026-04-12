@@ -227,6 +227,17 @@ footer {
     border-top: 1px solid #eee;
     margin-top: 40px;
 }
+
+footer a {
+    color: #555;
+    text-decoration: none;
+    margin: 0 6px;
+    font-size: 13px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
 
@@ -310,36 +321,18 @@ footer {
         </p>
     </div>
 
-    <!-- VALUES -->
-    <div class="section">
-        <h2>Our Values</h2>
-
-        <div class="grid">
-            <div class="card">Vision</div>
-            <div class="card">Quality</div>
-            <div class="card">Innovation</div>
-            <div class="card">Identity</div>
-        </div>
-    </div>
-
-    <!-- SOCIAL -->
-    <div class="social">
-        <h2>Connect With Us</h2>
-
-        <div class="icons">
-
-            <a href="https://instagram.com/ghostclothing54"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/@ghostclothing3"><i class="fab fa-tiktok"></i></a>
-            <a href="https://facebook.com"><i class="fab fa-facebook"></i></a>
-            <a href="https://wa.me/27839745807"><i class="fab fa-whatsapp"></i></a>
-
-        </div>
-    </div>
-
 </div>
 
 <footer>
-    © 2026 GHOST Clothing. All rights reserved.
+    ©️ 2026 GHOST Clothing. All rights reserved.
+
+    <br><br>
+
+    <a href="terms-of-use.html">Terms of Use</a> |
+    <a href="terms-of-sale.html">Terms of Sale</a> |
+    <a href="returns.html">Returns Policy</a> |
+    <a href="how-to-order.html">How to Order</a> |
+    <a href="faq.html">FAQ</a>
 </footer>
 
 <script>
@@ -352,13 +345,11 @@ setInterval(() => {
     slides[index].classList.add("active");
 }, 4500);
 
-/* MENU */
 function toggleMenu() {
     document.getElementById("menu").classList.toggle("active");
     document.getElementById("overlay").classList.toggle("active");
 }
 
-/* CART */
 function goCart() {
     window.location.href = "cart.html";
 }

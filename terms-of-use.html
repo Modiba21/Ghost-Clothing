@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions | Ghost Clothing</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #ffffff;
+    color: #111;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    z-index: 1000;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.brand {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* CART */
+.icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* MENU */
+.menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 240px;
+    height: 100vh;
+    background: #111;
+    padding: 70px 20px;
+    transition: 0.3s;
+    z-index: 2000;
+}
+
+.menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 15px 0;
+    font-size: 15px;
+}
+
+.menu.active {
+    left: 0;
+}
+
+/* CONTENT */
+.container {
+    padding: 100px 18px 50px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 16px;
+    margin-top: 22px;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* HIGHLIGHT BOX */
+.box {
+    background: #f7f7f7;
+    padding: 12px;
+    border-left: 4px solid black;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 25px;
+    font-size: 13px;
+    color: #777;
+    border-top: 1px solid #eee;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    h1{font-size:22px;}
+    .brand{font-size:13px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="left">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="brand">Ghost Clothing</div>
+    </div>
+
+</header>
+
+<!-- MENU -->
+<div class="menu" id="menu">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+<h1>Terms & Conditions</h1>
+
+<div class="box">
+By using Ghost Clothing, you agree to our terms designed to protect both customers and the brand.
+</div>
+
+<h2>1. Introduction</h2>
+<p>
+Welcome to GhostClothing. By accessing our website or purchasing from us, you agree to these Terms & Conditions.
+If you do not agree, please do not use our services.
+</p>
+
+<h2>2. Products</h2>
+<p>
+We sell high-quality streetwear including T-shirts, hoodies, and apparel.
+Minor differences in colour or design may occur due to production variations.
+</p>
+
+<h2>3. Pricing</h2>
+<p>
+All prices are listed in South African Rand (ZAR).
+Prices may change without notice.
+If not VAT registered, prices exclude VAT.
+</p>
+
+<h2>4. Orders & Payments</h2>
+<p>
+Orders are confirmed only after payment is received.
+We use secure payment providers such as PayFast.
+We reserve the right to cancel orders if necessary.
+</p>
+
+<h2>5. Shipping & Delivery</h2>
+<p>
+Delivery times are estimates and depend on courier services.
+Customers must provide correct delivery details.
+We are not responsible for courier delays.
+</p>
+
+<h2>6. Returns & Refunds</h2>
+<p>
+Items may be returned within 7 days if unused and in original condition.
+Refunds are processed after inspection and may take 5–10 business days.
+Return shipping is the customer’s responsibility unless faulty.
+</p>
+
+<h2>7. Intellectual Property</h2>
+<p>
+All Ghost Clothing designs, logos, and content are owned by the brand and cannot be copied or reused without permission.
+</p>
+
+<h2>8. Privacy</h2>
+<p>
+Customer data is only used for order processing and is never sold or shared.
+</p>
+
+<h2>9. Contact</h2>
+<p>
+Email: mosesmosco03@email.com<br>
+WhatsApp: 0796181373<br>
+Social: Ghost Clothing
+</p>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+© 2023 Ghost Clothing. All rights reserved.
+</footer>
+
+<script>
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function goCart(){
+    window.location.href="cart.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Returns & Refunds | Ghost Clothing</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #ffffff;
+    color: #111;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    z-index: 1000;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.brand {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* MENU */
+.menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 240px;
+    height: 100vh;
+    background: #111;
+    padding: 70px 20px;
+    transition: 0.3s;
+    z-index: 2000;
+}
+
+.menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 15px 0;
+    font-size: 15px;
+}
+
+.menu.active {
+    left: 0;
+}
+
+/* CONTENT */
+.container {
+    padding: 100px 18px 50px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-size: 16px;
+    margin-top: 22px;
+    margin-bottom: 8px;
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* BOX */
+.box {
+    background: #f7f7f7;
+    padding: 12px;
+    border-left: 4px solid black;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 25px;
+    font-size: 13px;
+    color: #777;
+    border-top: 1px solid #eee;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    h1{font-size:22px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="left">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="brand">Ghost Clothing</div>
+    </div>
+
+</header>
+
+<!-- MENU -->
+<div class="menu" id="menu">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+<h1>Returns & Refund Policy</h1>
+
+<div class="box">
+At Ghost Clothing, we value customer satisfaction. If you're not happy with your purchase, you may request a return or exchange under the conditions below.
+</div>
+
+<h2>1. Overview</h2>
+<p>
+At GhostClothing, we want you to be satisfied with your purchase. If you are not completely happy, we offer refunds or exchanges under the conditions outlined in this policy.
+</p>
+
+<h2>2. Returns Eligibility</h2>
+<p>
+• Items must be returned within 7 days of delivery.<br>
+• Items must be unused, unworn, and in original condition.<br>
+• Items must include original packaging and tags (if applicable).
+</p>
+
+<h2>3. Non-Refundable Items</h2>
+<p>
+• Worn or used clothing<br>
+• Items damaged after delivery<br>
+• Sale or discounted items (unless defective)
+</p>
+
+<h2>4. Exchanges</h2>
+<p>
+Exchanges are allowed for size or product changes depending on stock availability.  
+Customers are responsible for return shipping costs unless the item is defective or incorrect.
+</p>
+
+<h2>5. Refund Process</h2>
+<p>
+Once we receive and inspect your return, we will notify you of approval or rejection.  
+Approved refunds are processed to the original payment method.
+</p>
+
+<h2>6. Refund Timeframes</h2>
+<p>
+Refunds may take 5–10 business days depending on your bank or payment provider.
+</p>
+
+<h2>7. Damaged or Incorrect Items</h2>
+<p>
+If you receive a faulty or incorrect item:<br>
+• Contact us within 48 hours of delivery<br>
+• Provide proof (photos/videos)<br>
+• We will replace or refund the item at no extra cost
+</p>
+
+<h2>8. Shipping Costs</h2>
+<p>
+Original shipping fees are non-refundable.  
+Return shipping is the customer’s responsibility unless the item is faulty.
+</p>
+
+<h2>9. Contact</h2>
+<p>
+Email: mosesmosco03@email.com<br>
+WhatsApp: +27 79 618 1373<br>
+Social Media: Ghost Clothing
+</p>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+© 2023 Ghost Clothing. All rights reserved.
+</footer>
+
+<script>
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function goCart(){
+    window.location.href="cart.html";
+}
+</script>
+
+</body>
+</html>

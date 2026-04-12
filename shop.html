@@ -267,14 +267,13 @@ pointer-events:auto;
 
 <div class="summary">
 <p><span>Subtotal</span><span id="subtotal">R0</span></p>
-<p><span>Delivery</span><span id="delivery">R0</span></p>
 <p><strong>Total</strong><strong id="total">R0</strong></p>
 </div>
 
 <button class="btn" onclick="goCheckout()">Checkout</button>
 </div>
 
-<!-- NIKE POPUP -->
+<!-- POPUP -->
 <div id="addPopup">
 <div style="display:flex;justify-content:space-between;">
 <b>✔ Added to Bag</b>
@@ -295,21 +294,21 @@ Checkout
 <script>
 let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
 
-let products=[/* SAME PRODUCTS (unchanged) */ 
-{name:"Ghost Apparition",price:450,type:"tshirt",img:"images/t1.jpeg"},
-{name:"Ghost MidNight Drip",price:450,type:"tshirt",img:"images/t2.jpeg"},
-{name:"Ghost Boxy T-shirt",price:450,type:"tshirt",img:"images/t3.jpeg"},
-{name:"Ghost MidNight drip ",price:450,type:"tshirt",img:"images/t4.jpeg"},
-{name:"Wave Tee",price:450,type:"tshirt",img:"images/t5.jpeg"},
-{name:"Royal Basic Tee",price:450,type:"tshirt",img:"images/t6.jpeg"},
-{name:"Wave Tee",price:450,type:"tshirt",img:"images/t7.jpeg"},
-{name:"Ghost Vision Tee",price:450,type:"tshirt",img:"images/t8.jpeg"},
-{name:"Ghost Boxy T-Shirt",price:450,type:"tshirt",img:"images/t9.jpeg"},
-{name:"Ghost Vision Tee",price:450,type:"tshirt",img:"images/t10.jpeg"},
-{name:"Royal Core Hoodie",price:500,type:"hoodie",img:"images/h1.jpeg"},
-{name:"Royal Core Hoodie",price:500,type:"hoodie",img:"images/h2.jpeg"},
-{name:"Ghost Mode Hoodie",price:500,type:"hoodie",img:"images/h3.jpeg"},
-{name:"EveryDay Heavy Hoodie",price:500,type:"hoodie",img:"images/h4.jpeg"}
+let products=[
+{name:"Ghost Apparition",price:480,type:"tshirt",img:"images/t1.jpeg"},
+{name:"Ghost MidNight Drip",price:480,type:"tshirt",img:"images/t2.jpeg"},
+{name:"Ghost Boxy T-shirt",price:480,type:"tshirt",img:"images/t3.jpeg"},
+{name:"Ghost MidNight drip ",price:480,type:"tshirt",img:"images/t4.jpeg"},
+{name:"Wave Tee",price:480,type:"tshirt",img:"images/t5.jpeg"},
+{name:"Royal Basic Tee",price:480,type:"tshirt",img:"images/t6.jpeg"},
+{name:"Wave Tee",price:480,type:"tshirt",img:"images/t7.jpeg"},
+{name:"Ghost Vision Tee",price:480,type:"tshirt",img:"images/t8.jpeg"},
+{name:"Ghost Boxy T-Shirt",price:480,type:"tshirt",img:"images/t9.jpeg"},
+{name:"Ghost Vision Tee",price:480,type:"tshirt",img:"images/t10.jpeg"},
+{name:"Royal Core Hoodie",price:550,type:"hoodie",img:"images/h1.jpeg"},
+{name:"Royal Core Hoodie",price:550,type:"hoodie",img:"images/h2.jpeg"},
+{name:"Ghost Mode Hoodie",price:550,type:"hoodie",img:"images/h3.jpeg"},
+{name:"EveryDay Heavy Hoodie",price:550,type:"hoodie",img:"images/h4.jpeg"}
 ];
 
 function displayProducts(list){
@@ -421,12 +420,10 @@ Color: ${item.color}
 </div>`;
 });
 
-let delivery=subtotal>=1000?0:(subtotal>0?100:0);
-let total=subtotal+delivery;
+let total=subtotal;
 
 document.getElementById("cartItems").innerHTML=html;
 document.getElementById("subtotal").innerText="R"+subtotal;
-document.getElementById("delivery").innerText="R"+delivery;
 document.getElementById("total").innerText="R"+total;
 document.getElementById("count").innerText=totalQty;
 

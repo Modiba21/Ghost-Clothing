@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- ✅ MOBILE FIX -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>GHOST Checkout</title>
@@ -13,7 +12,7 @@
 body{
     background:#f9f9f9;
     color:#111;
-    overflow-x:hidden; /* ✅ prevents side scrolling */
+    overflow-x:hidden;
 }
 
 /* HEADER */
@@ -21,7 +20,7 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:14px 16px; /* ✅ mobile fit */
+    padding:14px 16px;
     background:#fff;
     border-bottom:1px solid #eee;
     position:sticky;
@@ -56,7 +55,7 @@ body{
 
 /* FORM */
 .form{
-    flex:1 1 320px; /* ✅ responsive */
+    flex:1 1 320px;
     background:#fff;
     padding:20px;
     border-radius:12px;
@@ -115,7 +114,7 @@ button{
 
 /* SUMMARY */
 .summary{
-    flex:1 1 320px; /* ✅ responsive */
+    flex:1 1 320px;
     background:#fff;
     padding:20px;
     border-radius:12px;
@@ -150,7 +149,7 @@ button{
     margin-top:12px;
 }
 
-/* ✅ MOBILE STACK */
+/* MOBILE */
 @media (max-width:768px){
     .container{
         flex-direction:column;
@@ -161,7 +160,6 @@ button{
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div class="left-header">
         <div class="back" onclick="goBack()">← Back</div>
@@ -171,7 +169,6 @@ button{
 
 <div class="container">
 
-<!-- FORM -->
 <div class="form">
 <h2>Checkout</h2>
 
@@ -184,13 +181,19 @@ button{
 <div class="delivery-options" id="deliveryBox">
 <h3>Select Delivery</h3>
 
-<div class="option active" onclick="selectDelivery('paxi',100,this)">
+<!-- ✅ ADDED PICKUP -->
+<div class="option active" onclick="selectDelivery('pickup',0,this)">
+Store Pickup — FREE
+</div>
+
+<div class="option" onclick="selectDelivery('paxi',100,this)">
 PAXI Pickup — R100
 </div>
 
 <div class="option" onclick="selectDelivery('courier',120,this)">
 Courier Delivery — R120
 </div>
+
 </div>
 
 <button onclick="payNow()">Proceed to Pay</button>
@@ -206,7 +209,6 @@ We accept:<br>
 
 </div>
 
-<!-- SUMMARY -->
 <div class="summary">
 <h2>Your Shopping Bag</h2>
 
@@ -232,9 +234,10 @@ We accept:<br>
 </div>
 
 <script>
-/* YOUR JS IS 100% UNCHANGED */
 let cart = JSON.parse(localStorage.getItem("ghost_cart")) || [];
-let deliveryFee = 100;
+
+/* ✅ DEFAULT NOW FREE */
+let deliveryFee = 0;
 
 function renderCart(){
 let html = "";
@@ -268,7 +271,11 @@ box.innerHTML = "<h3>Free Delivery (Orders over R1000)</h3>";
 box.innerHTML = `
 <h3>Select Delivery</h3>
 
-<div class="option active" onclick="selectDelivery('paxi',100,this)">
+<div class="option active" onclick="selectDelivery('pickup',0,this)">
+Store Pickup — FREE
+</div>
+
+<div class="option" onclick="selectDelivery('paxi',100,this)">
 PAXI Pickup — R100
 </div>
 

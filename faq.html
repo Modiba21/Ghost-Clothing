@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | Ghost Clothing</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#fff;
+    color:#111;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 16px;
+    border-bottom:1px solid #eee;
+    z-index:1000;
+}
+
+.left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.menu-icon{
+    font-size:18px;
+    cursor:pointer;
+}
+
+.brand{
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:2px;
+}
+
+.icon{
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* MENU */
+.menu{
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:240px;
+    height:100vh;
+    background:#111;
+    padding:70px 20px;
+    transition:0.3s;
+}
+
+.menu a{
+    display:block;
+    color:#fff;
+    text-decoration:none;
+    margin:15px 0;
+}
+
+.menu.active{
+    left:0;
+}
+
+/* CONTENT */
+.container{
+    padding:100px 18px 60px;
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    font-size:26px;
+    text-align:center;
+    margin-bottom:20px;
+    letter-spacing:1px;
+}
+
+.box{
+    background:#f6f6f6;
+    padding:12px;
+    border-left:4px solid #000;
+    margin-bottom:20px;
+    font-size:13px;
+    color:#333;
+}
+
+/* FAQ ITEM */
+.faq{
+    border:1px solid #eee;
+    margin-bottom:10px;
+    border-radius:6px;
+    overflow:hidden;
+}
+
+.question{
+    padding:14px;
+    cursor:pointer;
+    font-weight:600;
+    background:#fafafa;
+}
+
+.answer{
+    padding:14px;
+    display:none;
+    font-size:14px;
+    color:#444;
+    line-height:1.6;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:25px;
+    font-size:13px;
+    color:#777;
+    border-top:1px solid #eee;
+    margin-top:30px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    h1{font-size:22px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="left">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="brand">Ghost Clothing</div>
+    </div>
+
+</header>
+
+<!-- MENU -->
+<div class="menu" id="menu">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+<h1>Frequently Asked Questions</h1>
+
+<div class="box">
+Find answers to the most common questions about orders, shipping, returns, and payments at Ghost Clothing.
+</div>
+
+<!-- FAQ 1 -->
+<div class="faq">
+    <div class="question">How do I place an order?</div>
+    <div class="answer">
+        Simply browse our shop, select your item, add it to cart, and proceed to checkout.
+        You will receive payment instructions via PayFast or available payment methods.
+    </div>
+</div>
+
+<!-- FAQ 2 -->
+<div class="faq">
+    <div class="question">How long does delivery take?</div>
+    <div class="answer">
+        Delivery usually takes 2–5 working days depending on your location and courier service.
+    </div>
+</div>
+
+<!-- FAQ 3 -->
+<div class="faq">
+    <div class="question">Can I return my item?</div>
+    <div class="answer">
+        Yes, items can be returned within 7 days if they are unused, unworn, and in original condition.
+        Please refer to our Returns Policy for full details.
+    </div>
+</div>
+
+<!-- FAQ 4 -->
+<div class="faq">
+    <div class="question">What payment methods do you accept?</div>
+    <div class="answer">
+        We accept secure payments via PayFast and other approved payment gateways.
+    </div>
+</div>
+
+<!-- FAQ 5 -->
+<div class="faq">
+    <div class="question">Can I cancel my order?</div>
+    <div class="answer">
+        Orders can only be cancelled before they are shipped. Once dispatched, cancellation is not possible.
+    </div>
+</div>
+
+<!-- FAQ 6 -->
+<div class="faq">
+    <div class="question">What if I receive a damaged item?</div>
+    <div class="answer">
+        If you receive a damaged or incorrect item, contact us within 48 hours with proof.
+        We will replace or refund your order.
+    </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+© 2023 Ghost Clothing. All rights reserved.
+</footer>
+
+<script>
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function goCart(){
+    window.location.href="cart.html";
+}
+
+/* FAQ toggle */
+const questions = document.querySelectorAll(".question");
+
+questions.forEach(q => {
+    q.addEventListener("click", () => {
+        const answer = q.nextElementSibling;
+        answer.style.display = (answer.style.display === "block") ? "none" : "block";
+    });
+});
+</script>
+
+</body>
+</html>
