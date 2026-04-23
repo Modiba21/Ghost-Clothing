@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -25,7 +26,8 @@ header{
     position:fixed;
     top:0;
     width:100%;
-    background:#fff;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -37,42 +39,51 @@ header{
 .left{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
 }
 
+/* hamburger (bigger + easier tap) */
 .menu-icon{
-    font-size:18px;
+    font-size:28px;
     cursor:pointer;
+    padding:8px 10px;
 }
 
+/* brand improved */
 .brand{
-    font-size:14px;
+    font-size:16px;
     font-weight:600;
-    letter-spacing:2px;
-}
-
-.icon{
-    font-size:18px;
-    cursor:pointer;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    color:#333;
 }
 
 /* MENU */
 .menu{
     position:fixed;
     top:0;
-    left:-260px;
-    width:240px;
+    left:-280px;
+    width:260px;
     height:100vh;
-    background:#111;
-    padding:70px 20px;
-    transition:0.3s;
+    background:rgba(18,18,18,0.96);
+    padding:80px 20px;
+    transition:0.3s ease;
+    z-index:2000;
+    box-shadow: 2px 0 18px rgba(0,0,0,0.2);
 }
 
 .menu a{
     display:block;
-    color:#fff;
+    color:#f5f5f5;
     text-decoration:none;
-    margin:15px 0;
+    margin:16px 0;
+    font-size:15px;
+    padding:10px;
+    border-radius:8px;
+}
+
+.menu a:hover{
+    background:rgba(255,255,255,0.08);
 }
 
 .menu.active{
@@ -124,10 +135,6 @@ footer{
     border-top:1px solid #eee;
 }
 
-/* MOBILE */
-@media(max-width:768px){
-    h1{font-size:22px;}
-}
 </style>
 </head>
 
@@ -137,9 +144,8 @@ footer{
 <header>
     <div class="left">
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <div class="brand">Ghost Clothing</div>
+        <div class="brand">GHOST CLOTHING</div>
     </div>
-
 </header>
 
 <!-- MENU -->
@@ -147,6 +153,10 @@ footer{
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
     <a href="about.html">About</a>
+
+    <a href="returns.html">Returns</a>
+    <a href="how-to-order.html">How to Order</a>
+    <a href="FAQ.html">FAQ</a>
 </div>
 
 <!-- CONTENT -->
@@ -159,52 +169,29 @@ These Terms of Sale explain how purchases are made on Ghost Clothing and form a 
 </div>
 
 <h2>1. Agreement</h2>
-<p>
-By placing an order on Ghost Clothing, you agree to these Terms of Sale as well as our Terms & Conditions and Refund Policy.
-</p>
+<p>By placing an order on Ghost Clothing, you agree to these Terms of Sale as well as our Terms & Conditions and Refund Policy.</p>
 
 <h2>2. Order Confirmation</h2>
-<p>
-All orders are subject to acceptance and availability.
-An order is only confirmed once payment has been successfully received.
-</p>
+<p>All orders are subject to acceptance and availability. An order is only confirmed once payment has been successfully received.</p>
 
 <h2>3. Pricing & Payment</h2>
-<p>
-All prices are listed in South African Rand (ZAR).
-We reserve the right to change prices at any time without prior notice.
-Payments are processed securely via PayFast or other approved payment gateways.
-</p>
+<p>All prices are listed in South African Rand (ZAR). We reserve the right to change prices at any time without notice. Payments are processed securely via PayFast.</p>
 
 <h2>4. Product Availability</h2>
-<p>
-We aim to keep all products in stock, but availability is not guaranteed.
-If an item is unavailable after purchase, the customer will be notified and refunded or offered an alternative.
-</p>
+<p>We aim to keep stock updated, but availability is not guaranteed. If unavailable, customers will be refunded or offered alternatives.</p>
 
 <h2>5. Delivery</h2>
-<p>
-Delivery times are estimates only and may vary depending on location and courier service.
-Ghost Clothing is not responsible for delays outside our control.
-</p>
+<p>Delivery times are estimates only. We are not responsible for courier delays.</p>
 
 <h2>6. Cancellations</h2>
-<p>
-Orders may only be cancelled before dispatch.
-Once an order has been shipped, it cannot be cancelled and must follow the Returns Policy.
-</p>
+<p>Orders can only be cancelled before dispatch.</p>
 
-<h2>7. Risk & Ownership</h2>
-<p>
-Ownership of goods passes to the customer once full payment has been received and the product has been delivered to the courier.
-</p>
+<h2>7. Ownership</h2>
+<p>Ownership passes to the customer once payment is received and goods are dispatched.</p>
 
 <h2>8. Contact</h2>
-<p>
-Email: mosesmosco03@email.com<br>
-WhatsApp: +27 79 619 1373<br>
-Social Media: Ghost Clothing
-</p>
+<p>Email: mosesmosco03@email.com<br>
+WhatsApp: +27 79 619 1373</p>
 
 </div>
 
@@ -214,13 +201,40 @@ Social Media: Ghost Clothing
 </footer>
 
 <script>
+
+const menu = document.getElementById("menu");
+const icon = document.querySelector(".menu-icon");
+
 function toggleMenu(){
-    document.getElementById("menu").classList.toggle("active");
+    menu.classList.toggle("active");
 }
 
-function goCart(){
-    window.location.href="cart.html";
+function closeMenu(){
+    menu.classList.remove("active");
 }
+
+/* close menu on outside click */
+document.addEventListener("click", function(e){
+    if(menu.classList.contains("active") && !menu.contains(e.target) && !icon.contains(e.target)){
+        closeMenu();
+    }
+});
+
+/* prevent same-page reload bug + auto close */
+document.querySelectorAll(".menu a").forEach(link=>{
+    link.addEventListener("click", function(e){
+
+        let href = this.getAttribute("href");
+        let currentPage = window.location.pathname.split("/").pop();
+
+        if(href === currentPage){
+            e.preventDefault();
+        }
+
+        closeMenu();
+    });
+});
+
 </script>
 
 </body>
